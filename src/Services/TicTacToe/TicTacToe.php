@@ -12,6 +12,8 @@ class TicTacToe
     const STATE_O_WIN = 'O_WON';
     const STATE_DRAW = 'DRAW';
 
+    const BOARD_DEFAULT = '---------';
+
     /**
      * @var string
      */
@@ -137,7 +139,7 @@ class TicTacToe
      */
     public function play(?string $board = null) : void
     {
-        $this->setBoard($board ? self::validateBoard($board) : '---------');
+        $this->setBoard($board ? self::validateBoard($board) : self::BOARD_DEFAULT);
         $this->processPlayerMove();
 
         $this->checkState();
@@ -300,6 +302,10 @@ class TicTacToe
      */
     public function processPlayerMove()
     {
+        if ($this->lastBoardState === null) {
+            $this->setLastBoardState(self::BOARD_DEFAULT);
+        }
+
         if ($this->board === $this->lastBoardState) {
             throw TicTacToeException::invalidMove('No movements made.');
         }
